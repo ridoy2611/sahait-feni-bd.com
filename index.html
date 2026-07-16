@@ -68,60 +68,6 @@
       }
     </script>
 
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "ProfessionalService",
-      "name": "SAHA IT Solution",
-      "image": "https://www.SAHAit-feni-bd.com/SAHA_IT_logo.png",
-      "@id": "https://www.SAHAit-feni-bd.com",
-      "url": "https://www.SAHAit-feni-bd.com",
-      "telephone": "+8801516505571",
-      "description": "Providing high-quality Graphics Design, Printing Services, and IT Services worldwide and locally in Bangladesh.",
-      "address": {
-        "@type": "PostalAddress",
-        "streetAddress": "Banshpara, Trunk Road",
-        "addressLocality": "Feni",
-        "postalCode": "3900",
-        "addressCountry": "BD"
-      },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": 23.0159,
-        "longitude": 91.3976
-      },
-      "areaServed": [
-        {
-          "@type": "Country",
-          "name": "Worldwide"
-        },
-        {
-          "@type": "City",
-          "name": "Feni"
-        }
-      ],
-      "founder": {
-        "@type": "Person",
-        "name": "Ridoy Saha"
-      },
-      "openingHoursSpecification": {
-        "@type": "OpeningHoursSpecification",
-        "dayOfWeek": [
-          "Monday",
-          "Tuesday",
-          "Wednesday",
-          "Thursday",
-          "Sunday"
-        ],
-        "opens": "09:00",
-        "closes": "20:00"
-      },
-      "sameAs": [
-        "https://www.facebook.com/sisfenibd26"
-      ]
-    }
-    </script>
-
     <style>
         .backdrop-blur-premium { backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
         .bento-glow:hover { box-shadow: 0 0 40px rgba(59, 130, 246, 0.15); border-color: rgba(6, 182, 212, 0.4); }
@@ -207,12 +153,22 @@
         <div data-aos="fade-left" data-aos-duration="1000" class="relative flex justify-center items-center">
             <div class="relative w-full max-w-[480px] aspect-square rounded-3xl bg-gradient-to-tr from-electricBlue/15 to-accentPurple/15 border border-white/10 backdrop-blur-md p-6 shadow-2xl flex items-center justify-center group hover:border-cyanNeon/40 transition-all duration-500">
                 <div class="absolute inset-0 bg-[linear-gradient(to_right,#ffffff03_1px,transparent_1px),linear-gradient(to_bottom,#ffffff03_1px,transparent_1px)] bg-[size:30px_30px] rounded-3xl"></div>
-                <div class="w-5/6 h-5/6 rounded-2xl bg-darkBg/90 border border-white/10 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.7)] flex flex-col items-center justify-center p-6 transform group-hover:rotate-2 group-hover:scale-[1.03] transition-all duration-500">
-                    <div class="w-16 h-16 rounded-full bg-gradient-to-tr from-cyanNeon to-accentPurple flex items-center justify-center mb-4 shadow-lg shadow-accentPurple/20 animate-bounce">
-                        <span class="text-2xl">⚡</span>
+                
+                <!-- পুরো ডার্ক বক্স কন্টেইনার (overflow-hidden relative দিয়ে ইমেজ ফিট নিশ্চিত করা হয়েছে) -->
+                <div id="dynamic-hero-card" class="w-5/6 h-5/6 rounded-2xl bg-darkBg/90 border border-white/10 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.7)] flex flex-col items-center justify-center transform group-hover:rotate-2 group-hover:scale-[1.03] transition-all duration-500 overflow-hidden relative">
+                    
+                    <!-- পুরো বক্স জুড়ে বসার জন্য ফুল-সাইজ ইভেন্ট কন্টেইনার -->
+                    <div id="hero-event-image-container" class="hidden absolute inset-0 w-full h-full z-10"></div>
+                    
+                    <!-- রেগুলার গ্লোবাল স্টুডিও কন্টেন্ট (প্যাডিং সহ ভেতরে গ্রুপ করা) -->
+                    <div id="hero-regular-content" class="flex flex-col items-center justify-center p-6 w-full h-full">
+                        <div id="hero-card-icon" class="w-16 h-16 rounded-full bg-gradient-to-tr from-cyanNeon to-accentPurple flex items-center justify-center mb-4 shadow-lg shadow-accentPurple/20 animate-bounce">
+                            <span class="text-2xl">⚡</span>
+                        </div>
+                        <span id="hero-card-heading" class="text-white font-space font-bold tracking-widest text-lg">GLOBAL STUDIO</span>
+                        <span id="hero-card-subtext" class="text-xs text-gray-500 mt-1 font-sora">Feni, Bangladesh</span>
                     </div>
-                    <span class="text-white font-space font-bold tracking-widest text-lg">GLOBAL STUDIO</span>
-                    <span class="text-xs text-gray-500 mt-1 font-sora">Feni, Bangladesh</span>
+                    
                 </div>
             </div>
         </div>
@@ -548,6 +504,39 @@
                 if(e.key === 'ArrowRight') changeImage(1); 
                 if(e.key === 'Escape') closeLightbox(); 
             } 
+        });
+
+        // --- ডাইনামিক ইভেন্ট কন্ট্রোলার জাভাস্ক্রিপ্ট (১৬-২৪ জুলাই ২০২৬ পুরো বক্সে ইমেজের জন্য) ---
+        document.addEventListener("DOMContentLoaded", () => {
+            const today = new Date();
+            const currentYear = today.getFullYear();
+            const currentMonth = today.getMonth() + 1; 
+            const currentDate = today.getDate();
+
+            const heroCard = document.getElementById("dynamic-hero-card");
+            const eventImageContainer = document.getElementById("hero-event-image-container");
+            const regularContent = document.getElementById("hero-regular-content");
+
+            if (heroCard && eventImageContainer && regularContent) {
+                // ২০২৬ সালের জুলাই মাসের ১৬ তারিখ থেকে ২৪ তারিখ পর্যন্ত রথযাত্রা ইভেন্ট উইন্ডো
+                if (currentYear === 2026 && currentMonth === 7 && (currentDate >= 16 && currentDate <= 24)) {
+                    // ১. গ্লোবাল স্টুডিওর টেক্সট ও আইকন সম্পূর্ণ হাইড
+                    regularContent.classList.add("hidden");
+                    
+                    // ২. ইমেজ বক্সটি শো করে পুরো সাইজ জুড়ে ছবি বসানো
+                    eventImageContainer.classList.remove("hidden");
+                    eventImageContainer.innerHTML = `<img src="Happy_Rathayatra.png" alt="Happy Rath Yatra" class="w-full h-full object-cover">`;
+                    
+                    // ৩. কার্ডে পালস অ্যানিমেশন ইফেক্ট যোগ
+                    heroCard.classList.add("animate-pulse");
+                } else {
+                    // ২৫শে জুলাই থেকে অটোমেটিক আগের অবস্থায় ফিরে যাবে
+                    regularContent.classList.remove("hidden");
+                    eventImageContainer.classList.add("hidden");
+                    eventImageContainer.innerHTML = "";
+                    heroCard.classList.remove("animate-pulse");
+                }
+            }
         });
     </script>
 </body>
